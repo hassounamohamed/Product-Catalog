@@ -6,7 +6,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
 # ---------------------- DATABASE CONFIG ----------------------
-DATABASE_URL = "postgresql+psycopg2://postgres:mohamed123@localhost:5432/product_catalog"
+DATABASE_URL = "postgresql+psycopg2://postgres:password@localhost:5432/product_catalog"
 
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(bind=engine)
