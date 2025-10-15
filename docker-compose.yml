@@ -1,0 +1,40 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:15
+    container_name: product_catalog_db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: product_catalog
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+
+        mcp:
+    build: .
+    container_name: product_catalog_mcp
+    depends_on:
+      - api
+    command: >
+      bash -c "python mcp_server.py"
+
+
+  api:
+    build: .
+    container_name: product_catalog_api
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgresql+psycopg2://postgres:password@db:5432/product_catalog
+    ports:
+      - "8000:8000"
+    command: >
+      bash -c "uvicorn main:app --host 0.0.0.0 --port 8000"
+
+volumes:
+  postgres_data:
